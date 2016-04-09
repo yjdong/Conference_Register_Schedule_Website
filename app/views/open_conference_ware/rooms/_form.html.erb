@@ -1,0 +1,36 @@
+<% focus :room_name %>
+
+<%= form_for(@room, :html => { :multipart => true }) do |f| %>
+  <%= f.error_messages %>
+
+  <p>
+    <%= f.label :name %><br />
+    <%= f.text_field :name, :class => "form-control" %>
+  </p>
+  <p>
+    <%= f.label :capacity, "Capacity (number of people)" %><br />
+    <%= f.text_field :capacity, :class => "form-control" %>
+  </p>
+  <p>
+    <%= f.label :size %><br />
+    <%= f.text_field :size, :class => "form-control" %>
+  </p>
+  <p>
+    <%= f.label :seating_configuration %><br />
+    <%= f.text_field :seating_configuration, :class => "form-control" %>
+  </p>
+  <p>
+    <%= f.label :description %> (<%= display_textile_help_link %>)<br />
+    <%= f.text_area :description, :class => "form-control" %>
+  </p>
+  <p>
+    <%= f.label :image, "Image" %>
+    <%= image_tag @room.image.url(:small) if @room.image.file? %>
+    <%= f.file_field :image %>
+  </p>
+  <p>
+    <%= f.submit @room.new_record? ? "Create" : "Update", :class => "btn btn-primary" %>
+    <%= link_to 'Cancel', @room, :class => "btn btn-default" %>
+    <%= link_to 'Destroy', room_path(@room), :method => :delete, :data => { :confirm => %{Destroy room "#{@room.name}"?} }, :class => "btn btn-danger pull-right" unless @room.new_record? %>
+  </p>
+<% end %>

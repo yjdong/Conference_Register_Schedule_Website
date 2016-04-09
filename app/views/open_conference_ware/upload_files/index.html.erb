@@ -1,0 +1,34 @@
+<% page_title "Upload file" %>
+<%= form_for :uploadFile, :html => { :multipart => true } do |f| %>
+    <div class="field">
+      <%= f.label :"Choose one or more files from your device:" %>
+      <%= f.file_field :file ,multiple: true, :onchange => 'this.form.submit()'%>
+      <%= f.text_field :proposal ,:value => params[:proposal], :style => "display: none;"%>
+    </div>
+    <div class="actions">
+      <%= submit_tag "", :id => 'Submit', :style => "display: none;" %>
+    </div>
+<% end %>
+
+<% if @data.empty? %>
+    <h4>No file was uploaded.</h4>
+<% else %>
+    <table>
+      <tr>
+        <th>File Name</th>
+        <th>Operation</th>
+        <th></th>
+      </tr>
+      <% @data.each do |data| %>
+          <tr>
+            <td><%= data.fileName %></td>
+            <td>
+              <%= link_to "Download", :controller=> :upload_files, :action =>:download, :id => data.id  %>
+            </td>
+            <td>
+              <%= link_to 'Delete', {:controller=> :upload_files, :action =>:delete, :id => data.id,:remote => true},  { :confirm => 'Are you sure to delete the file?' } %>
+            </td>
+          </tr>
+      <% end %>
+    </table>
+<% end %>

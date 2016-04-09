@@ -1,0 +1,6 @@
+<p><strong>Thank you for submitting <%= link_to "your proposal", proposal_path(@proposal) %> to <%= @event.title %>!</strong></p>
+
+<h3>Next Steps</h3>
+
+<p>You'll hear back from us after <%= @event.deadline.to_date.to_s(:long) %>, when proposal submissions close.</p>
+

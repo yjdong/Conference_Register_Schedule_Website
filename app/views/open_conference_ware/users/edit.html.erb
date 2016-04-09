@@ -1,0 +1,73 @@
+<% page_title "Edit user: #{h @user.label}" %>
+
+<%= form_for(@user, :html => {:multipart => true}) do |f| %>
+  <%= f.error_messages %>
+  <%= hidden_field_tag :require_complete_profile, true if params[:require_complete_profile] %>
+
+  <% if admin? %>
+    <div class="checkbox">
+      <label><%= f.check_box :admin %> Admin?</label>
+    </div>
+    <div class="checkbox">
+      <label><%= f.check_box :selector %> Selection committee?</label>
+    </div>
+    <div class="checkbox">
+      <label><%= f.check_box :complete_profile %> Complete profile?</label>
+    </div>
+  <% end %>
+  <% if admin? || can_edit?(@user) %>
+    <div class="form-group">
+      <label><%= required_field if @user.complete_profile %>Email (kept private)</label>
+      <%= f.text_field :email, :class => "form-control" %>
+    </div>
+  <% end %>
+  <div class="form-group">
+    <label><%= required_field if @user.complete_profile %>First Name</label>
+    <%= f.text_field :first_name, :class => "form-control" %>
+  </div>
+  <div class="form-group">
+    <label><%= required_field if @user.complete_profile %>Last Name</label>
+    <%= f.text_field :last_name, :class => "form-control" %>
+  </div>
+  <div class="form-group">
+    <label>Affiliation</label>
+    <%= f.text_field :affiliation, :class => "form-control" %>
+  </div>
+  <div class="form-group">
+    <label>Website URL</label>
+    <%= f.text_field :website, :class => "form-control" %>
+  </div>
+  <div class="form-group">
+    <label>Blog URL</label>
+    <%= f.text_field :blog_url, :class => "form-control" %>
+  </div>
+  <div class="form-group">
+    <label>Twitter handle</label>
+    <%= f.text_field :twitter, :class => "form-control" %>
+  </div>
+  <div class="form-group">
+    <label>Identi.ca handle</label>
+    <%= f.text_field :identica, :class => "form-control" %>
+  </div>
+  <div class="form-group">
+    <label>Photo</label>
+    <%= image_tag @user.photo.url(:avatar) if @user.photo.file? %>
+    <%= f.file_field :photo %>
+  </div>
+  <div class="form-group">
+    <label><%= required_field if @user.complete_profile %>Biography</label> (<%= display_textile_help_link %>)
+    <%= f.text_area :biography, :class => "form-control" %>
+  </div>
+  <div class="form-group">
+    <%= f.submit("Save my profile", :class => "btn btn-primary") %>
+    <%= f.submit("Complete my speaker profile...", :name => :require_complete_profile, :class => "btn btn-default") unless @user.complete_profile? %>
+    <%= link_to "Cancel", @user, :class => "btn btn-default" %>
+    <% if admin? %>
+      <%= link_to "Delete", @user, :method => :delete, :data => { :confirm => "Delete user #{h @user.label}?" }, :class => "btn btn-danger pull-right" %>
+    <% end %>
+
+    <p style="margin-top: 2em; margin-bottom: 0">
+      <%= required_field %> Fields marked with a red asterisk required and must be filled.
+    </p>
+  </div>
+<% end %>

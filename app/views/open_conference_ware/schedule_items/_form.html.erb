@@ -1,0 +1,35 @@
+<% focus :schedule_item_title %>
+
+<%= form_for(@schedule_item) do |f| %>
+  <%= f.error_messages %>
+
+  <p>
+    <%= f.label :title %><br />
+    <%= f.text_field :title, :class => "form-control" %>
+  </p>
+  <p>
+    <%= f.label :excerpt %> (<%= display_textile_help_link %>)<br />
+    <%= f.text_area :excerpt, :class => "form-control" %>
+  </p>
+  <p>
+    <%= f.label :description %> (<%= display_textile_help_link %>)<br />
+    <%= f.text_area :description, :class => "form-control" %>
+  </p>
+  <p>
+    <%= f.label :start_time %><br />
+    <%= f.datetime_select :start_time, :class => "form-control" %>
+  </p>
+  <p>
+    <%= f.label :duration, "Duration (minutes)" %><br />
+    <%= f.text_field :duration, :class => "form-control" %>
+  </p>
+  <p>
+    <%= f.label :room_id, "Room" %><br />
+    <%= f.collection_select :room_id, @event.rooms, :id, :name, {:include_blank => true}, :class => "form-control" %>
+  </p>
+  <p>
+    <%= f.submit @schedule_item.new_record? ? "Create" : "Update", :class => "btn btn-primary" %>
+    <%= link_to 'Cancel', @schedule_item, :class => "showable", :class => "btn btn-default" %>
+    <%= link_to 'Destroy', schedule_item_path(@schedule_item), :method => :delete, :data => { :confirm => %{Destroy schedule item "#{@schedule_item.title}"?} }, :class => "btn btn-danger pull-right" unless @schedule_item.new_record? %>
+  </p>
+<% end %>

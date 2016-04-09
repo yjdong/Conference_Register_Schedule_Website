@@ -1,0 +1,30 @@
+<%= error_messages_for :snippet %>
+
+<%= form_for([:manage, @snippet], :html => {:class => "snippet_form"}) do |f| %>
+  <%= hidden_field_tag :return_to, @return_to %>
+
+  <div class="form-group">
+    <%= f.label :slug %>
+    <% if @snippet.new_record? %>
+      <%= f.text_field :slug, :class => "form-control" %>
+    <% else %>
+      <p><%= h @snippet.slug %></p>
+    <% end %>
+  </div>
+
+  <div class="form-group">
+    <%= f.label :description %>
+    <%= f.text_field :description, :class => "form-control" %>
+  </div>
+
+  <div class="form-group">
+    <%= f.label :content %>
+    <%= f.text_area :content, :id => :snippet_content, :class => "form-control" %>
+  </div>
+
+  <div class="form-group">
+    <%= f.submit @snippet.new_record? ? "Create" : "Update", :class => "btn btn-primary" %>
+    <%= link_to "Cancel", manage_snippets_path, :class => "btn btn-default" %>
+    <%= link_to 'Destroy', manage_snippet_path(@snippet), :method => :delete, :data => { :confirm => %{Destroy snippet "#{@snippet.slug}"?} }, :class => "btn btn-danger pull-right" unless @snippet.new_record? %>
+  </div>
+<% end %>
